@@ -8,8 +8,12 @@ class Node:
     """
     def __init__(self, id: int,h_scores: int, coordinates: Tuple[float, float]):
         self.id = id
-        self.h_scores = h_scores
+        self.h = h_scores
+        self.g = float('inf')
+        self.f = float('inf')
         self.coordinates = coordinates
+    def __lt__(self, other):
+        return self.f < other.f
 
 class Edge:
     """
@@ -71,14 +75,16 @@ class AStar:
         :return: 节点序列，从起点到终点的最短路径。
         """
         # 初始化开放列表，包含起点及其初始f值
-        open_set = [(0, graph.start_node)]
+        
+        open_set = []
+        heapq.heappush(open_set,(0, graph.start_node))
         # 记录每个节点的来源
         came_from = {graph.start_node.id: None}
         # 记录从起点到当前节点的代价
         g_scores = {graph.start_node.id: 0}
         # 记录当前节点到终点的估计代价
         # f_scores = {graph.start_node.id: self.manhattan_distance(graph.start_node, graph.goal_node)}
-        f_scores = {graph.start_node.id: (g_scores[graph.start_node.id]+graph.start_node.h_scores)}
+        f_scores = {graph.start_node.id: (g_scores[graph.start_node.id]+graph.start_node.h)}
 
         while open_set:
             # 从开放列表中选择f值最小的节点
@@ -105,7 +111,7 @@ class AStar:
                     came_from[neighbor.id] = current_node
                     g_scores[neighbor.id] = tentative_g_score
                     # f_scores[neighbor.id] = tentative_g_score + self.manhattan_distance(neighbor, graph.goal_node)
-                    f_scores[neighbor.id] = tentative_g_score + neighbor.h_scores
+                    f_scores[neighbor.id] = tentative_g_score + neighbor.h
                     # 将邻居节点加入开放列表
                     heapq.heappush(open_set, (f_scores[neighbor.id], neighbor))
 
