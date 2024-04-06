@@ -1,5 +1,5 @@
 # Example usage:
-from algorithm.A_start.srccode import a_star_search, Node
+from algorithm.A_start.grid.srccode import a_star_search, Node
 # Define a simple grid with 'S' as start, 'G' as goal, and '#' as obstacles
 grid = [
     ['S', ' ', ' ', '#', ' '],

@@ -61,11 +61,14 @@ def a_star_search(start, goal, grid, obstacles=None):
     open_list = []
     heapq.heappush(open_list, (start.h, start))
 
-    closed_list = set()
+    closed_list = {}  # 使用字典存储节点及其对应的g值，便于快速查找和更新
+
     # 初始化起点属性
     start.g = 0
     start.h = heuristic(start, goal)
     start.f = start.g + start.h
+    grid[start.x][start.y]=start
+    grid[goal.x][goal.y]=goal
 
     # 循环搜索直到找到目标或开放列表为空
     while open_list:
@@ -80,18 +83,20 @@ def a_star_search(start, goal, grid, obstacles=None):
             path.reverse()
             return path
 
-        closed_list.add(current)
+        closed_list[current] = current.g  # 将节点及其g值添加到closed_list
 
         # 遍历当前节点的四个邻居
         for dx, dy in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
             neighbor_x = current.x + dx
             neighbor_y = current.y + dy
 
-            # 跳过不可访问的邻居节点
+            # 跳过不可访问的邻居节点包括父节点：障碍物、父节点
             if neighbor_x < 0 or neighbor_y < 0 or \
                     neighbor_x >= len(grid) or neighbor_y >= len(grid[0]) or \
                     (neighbor_x, neighbor_y) in obstacles:
                 continue
+            if current.parent and (neighbor_x, neighbor_y) == (current.parent.x,current.parent.y):
+                    continue
 
             neighbor = grid[neighbor_x][neighbor_y]
 
@@ -99,7 +104,7 @@ def a_star_search(start, goal, grid, obstacles=None):
             tentative_g = current.g + 1  # 假设移动成本为1
 
             # 跳过已评估或更好路径的邻居节点
-            if neighbor in closed_list and tentative_g >= neighbor.g:
+            if neighbor in closed_list and tentative_g >= neighbor.g:  # 更改此处的判断逻辑
                 continue
 
             # 更新邻居节点的属性
@@ -114,4 +119,3 @@ def a_star_search(start, goal, grid, obstacles=None):
 
     # 如果没有找到路径，返回None
     return None
-
