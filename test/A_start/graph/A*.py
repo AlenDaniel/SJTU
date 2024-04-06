@@ -8,6 +8,8 @@ edgs = []
 row = 0
 col = 0
 graph = Graph()
+
+# 构建数据
 for id,x in enumerate(data):
     if id%3!=0:
         row+=1
@@ -27,7 +29,7 @@ for x in data_edg:
 
 graph.set_start_and_goal(nodes[0], nodes[4])
 
-
+# 测试运行
 try:
     astart = AStar()
     shortest_path_nodes = astart.a_star_search(graph)

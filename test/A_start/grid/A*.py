@@ -1,5 +1,6 @@
 # 示例代码
 from srccode import a_star_search, Node
+
 # 数据格式
 grid = [
     ['S', ' ', ' ', '#', ' '],
