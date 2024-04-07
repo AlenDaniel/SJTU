@@ -4,9 +4,9 @@ class Node:
     def __init__(self, x, y):
             self.x = x
             self.y = y
-            self.g = float('inf')  # 初始化g值为无穷大，表示起始点到当前点的距离成本
-            self.h = float('inf')  # 初始化h值为无穷大，表示当前点到目标点的估算距离成本
-            self.f = float('inf')  # 初始化f值为无穷大，f = g + h
+            self.g = float('inf')  
+            self.h = float('inf')  
+            self.f = float('inf')  
             self.parent = None  # 初始化父节点为None，用于记录路径
     def __lt__(self, other):
         return self.f < other.f
