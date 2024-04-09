@@ -1,5 +1,5 @@
 from srccode import *
-
+from draw import *
 # 使用示例
 data = [7,6,2,1,0]
 data_edg = [(0,1,1),(0,2,4),(1,2,2),(1,3,5),(1,4,1),(2,3,2),(3,4,3)]
@@ -7,7 +7,7 @@ nodes = []
 edgs = []
 row = 0
 col = 0
-graph = Graph()
+graph = NetworkXCompatibleGraph()
 
 # 构建数据
 for id,x in enumerate(data):
@@ -28,6 +28,10 @@ for x in data_edg:
     graph.add_edge(edg)
 
 graph.set_start_and_goal(nodes[0], nodes[4])
+
+newG = graph.to_networkx_graph()
+# 图数据绘制
+draw_graph(newG)
 
 # 测试运行
 try:

@@ -1,5 +1,5 @@
 import heapq 
-
+import networkx as nx
 from typing import Dict, List, Tuple
 
 class Node:
@@ -57,6 +57,24 @@ class Graph:
     def set_start_and_goal(self, start_node: Node, goal_node: Node):
         self.start_node = start_node
         self.goal_node = goal_node
+
+class NetworkXCompatibleGraph(Graph):
+    def __init__(self):
+        super().__init__()
+    def to_networkx_graph(self):
+        """将当前图转换为networkx.Graph对象"""
+        # G = nx.Graph() #无向图
+        G = nx.DiGraph() #有向图
+
+        # 添加节点
+        for node in self.nodes:
+            G.add_node(node.id, coordinates=node.coordinates)
+
+        # 添加边
+        for edge in self.edges:
+            G.add_edge(edge.start.id, edge.end.id, weight=edge.weight)
+
+        return G
 
 
 class AStar:
