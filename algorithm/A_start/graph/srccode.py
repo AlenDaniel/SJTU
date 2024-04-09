@@ -1,4 +1,5 @@
 import heapq 
+import networkx as nx
 from typing import Dict, List, Tuple
 class Node:
     def __init__(self, id: int,h_scores: int, coordinates: Tuple[float, float]):
@@ -15,6 +16,32 @@ class Edge:
         self.start = start
         self.end = end
         self.weight = weight
+import json
+
+class NodeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Node):
+            return {
+                '__type__': 'Node',
+                'id': obj.id,
+                'h_cost': str(obj.h) if obj.h == float("inf") else obj.h,
+                'f_cost': str(obj.f) if obj.f == float("inf") else obj.f,
+                'g_cost': str(obj.g) if obj.g == float("inf") else obj.g,
+                'position': obj.coordinates
+            }
+        # 如果遇到其他未知类型，调用基类方法
+        return super().default(obj)
+class EdgeEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, Edge):
+            return {
+                '__type__': 'Edge',
+                'start': obj.start.coordinates,
+                'end': obj.end.coordinates,
+                'weight': obj.weight
+            }
+        # 如果遇到其他未知类型，调用基类方法
+        return super().default(obj)
 
 class Graph:
     def __init__(self):
@@ -43,6 +70,23 @@ class Graph:
     def set_start_and_goal(self, start_node: Node, goal_node: Node):
         self.start_node = start_node
         self.goal_node = goal_node
+class NetworkXCompatibleGraph(Graph):
+    def __init__(self):
+        super().__init__()
+    def to_networkx_graph(self):
+        """将当前图转换为networkx.Graph对象"""
+        # G = nx.Graph() #无向图
+        G = nx.DiGraph() #有向图
+
+        # 添加节点
+        for node in self.nodes:
+            G.add_node(node.id, coordinates=node.coordinates)
+
+        # 添加边
+        for edge in self.edges:
+            G.add_edge(edge.start.id, edge.end.id, weight=edge.weight)
+
+        return G
 
 
 class AStar:
