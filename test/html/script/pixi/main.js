@@ -39,8 +39,8 @@ function createNode(x, y, radius, color) {
   }
 
 // 真实数据
-const response = await fetch('http://192.168.1.107:8055/getNodes/');
-const edge = await fetch('http://192.168.1.107:8055/getEdges/');
+const response = await fetch('http://0.0.0.0:8055/getNodes/');
+const edge = await fetch('http://0.0.0.0:8055/getEdges/');
 
 var raw = JSON.stringify({
   "start": 123,

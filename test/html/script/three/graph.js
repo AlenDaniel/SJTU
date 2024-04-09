@@ -48,8 +48,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 // ];
 
 // 真实数据
-const response = await fetch('http://192.168.1.107:8055/getNodes/');
-const edges = await fetch('http://192.168.1.107:8055/getEdges/');
+const response = await fetch('http://0.0.0.0:8055/getNodes/');
+const edges = await fetch('http://0.0.0.0:8055/getEdges/');
 
 const nodes = JSON.parse(await response.json());
 const edgs = JSON.parse(await edges.json())
